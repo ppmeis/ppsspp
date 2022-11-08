@@ -60,7 +60,6 @@ bool AndroidEGLGraphicsContext::InitFromRenderThread(ANativeWindow *wnd, int des
 
 void AndroidEGLGraphicsContext::ShutdownFromRenderThread() {
 	INFO_LOG(G3D, "AndroidEGLGraphicsContext::Shutdown");
-	renderManager_->WaitUntilQueueIdle();
 	renderManager_ = nullptr;  // owned by draw_.
 	delete draw_;
 	draw_ = nullptr;

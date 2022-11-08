@@ -200,7 +200,6 @@ public:
 	const std::string &GetSource() const { return source_; }
 	~VKShaderModule() {
 		if (module_) {
-			DEBUG_LOG(G3D, "Queueing %s (shmodule %p) for release", tag_.c_str(), module_);
 			VkShaderModule shaderModule = module_->BlockUntilReady();
 			vulkan_->Delete().QueueDeleteShaderModule(shaderModule);
 			delete module_;
@@ -266,7 +265,6 @@ public:
 		ubo_ = new uint8_t[uboSize_];
 	}
 	~VKPipeline() {
-		DEBUG_LOG(G3D, "Queueing %s (pipeline) for release", tag_.c_str());
 		if (pipeline) {
 			pipeline->QueueForDeletion(vulkan_);
 		}
