@@ -81,7 +81,6 @@ public:
 
 	void StopThread() override {
 		if (renderManager_) {
-			renderManager_->WaitUntilQueueIdle();
 			renderManager_->StopThread();
 		}
 	}

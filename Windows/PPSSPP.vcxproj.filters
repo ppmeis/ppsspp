@@ -541,6 +541,9 @@
     <ClInclude Include="W32Util\ContextMenu.h">
       <Filter>Windows\W32Util</Filter>
     </ClInclude>
+    <ClInclude Include="..\libretro\LibretroGLCoreContext.h">
+      <Filter>Other Platforms\libretro</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="icon1.ico">
