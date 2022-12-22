@@ -17,16 +17,21 @@
 
 #include <string>
 #include <sstream>
+#include <map>
 
 #include "Common/Log.h"
 #include "Common/GPU/Vulkan/VulkanContext.h"
 #include "Common/GPU/Vulkan/VulkanDebug.h"
 
+// Used to stop outputting the same message over and over.
+// TODO: Add some mechanism to reset this per game you launch.
+static std::map<int, int> g_errorCount;
+
 VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugUtilsCallback(
 	VkDebugUtilsMessageSeverityFlagBitsEXT           messageSeverity,
 	VkDebugUtilsMessageTypeFlagsEXT                  messageType,
-	const VkDebugUtilsMessengerCallbackDataEXT*      pCallbackData,
-	void*                                            pUserData) {
+	const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
+	void *pUserData) {
 	const VulkanLogOptions *options = (const VulkanLogOptions *)pUserData;
 	std::ostringstream message;
 
@@ -48,6 +53,11 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugUtilsCallback(
 		// See https://github.com/hrydgard/ppsspp/pull/16354
 		return false;
 	}
+
+	if (g_errorCount[messageCode] > 10) {
+		WARN_LOG(G3D, "Too many validation messages with message %d", messageCode);
+	}
+	g_errorCount[messageCode]++;
 
 	if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
 		message << "ERROR(";
